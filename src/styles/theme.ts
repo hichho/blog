@@ -28,7 +28,7 @@ export const darkTheme: Theme = {
     type: ThemeEnum.DARK,
     cargo: {
         background: '#282c35',
-        head: '#fff',
+        head: '#ffa7c4',
         title: '#ffa7c4',
         content: '#fff',
         author: '#d23669'
