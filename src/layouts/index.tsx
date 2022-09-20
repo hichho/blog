@@ -1,45 +1,48 @@
+import React from "react";
 import {Outlet} from 'umi';
-// @ts-ignore
 import Toggle from 'react-toggle';
-import styles from './index.less';
-import sun from '../assets/sun.png';
-import moon from '../assets/moon.png';
 import "react-toggle/style.css";
-// @ts-ignore
-import {ThemeProvider} from 'styled-components';
-import {HeaderDiv} from '../styles/styled';
+import {ThemeProvider} from 'styled-components'
+import {Container} from '@/styles/styled';
+import {darkTheme, lightTheme, Theme, ThemeEnum} from "@/styles/theme";
+import {useImmerReducer} from "use-immer";
+import sun from '@/assets/sun.png';
+import moon from '@/assets/moon.png';
 
-import {useState} from "react";
+const toggleIconStyle = {
+    width:12,height:12
+}
+
+function initialTheme(): Theme {
+    const current = new Date().getHours();
+    if (current > 18 && current < 8) {
+        return darkTheme;
+    }
+    return lightTheme;
+}
+
+function themeReducer(state: Theme): Theme {
+    return state.type === ThemeEnum.DARK ? lightTheme : darkTheme;
+}
 
 export default function Layout() {
-
-    const [theme, setTheme] = useState({
-        backgroundColor: 'green'
-    })
-
-    const changeTheme = () => {
-        console.log('切换主题')
-        setTheme({
-            backgroundColor: 'red'
-        })
-    }
-    const iconStyle = {width: '12px', height: '12px', margin: 0};
-
-    function handleSoupChange() {
-    }
-
+    const [theme, dispatch] = useImmerReducer(themeReducer, darkTheme, initialTheme)
     return (
-        <div className={styles.frame}>
-            <label>
-                <Toggle
-                    defaultChecked={true}
-                    icons={{
-                        checked: <img src={sun} style={iconStyle}/>,
-                        unchecked: <img src={moon} style={iconStyle}/>,
-                    }}
-                    onChange={handleSoupChange}/>
-                <span>Custom icons</span>
-            </label>
-            <Outlet/>
-        </div>)
+        <ThemeProvider theme={theme}>
+            <Container>
+                <label>
+                    <Toggle
+                        defaultChecked={true}
+                        icons={{
+                            checked: <img src={sun} style={toggleIconStyle} alt={''}/>,
+                            unchecked: <img src={moon} style={toggleIconStyle} alt={''}/>,
+                        }}
+                        onChange={dispatch}/>
+                    <span>Custom icons</span>
+                </label>
+                <Outlet/>
+            </Container>
+        </ThemeProvider>
+    )
 }
+

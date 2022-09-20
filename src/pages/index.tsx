@@ -1,10 +1,12 @@
-// import yayJpg from '../assets/yay.jpg';
-//<img src={yayJpg} width="388" />
+import React, {useContext} from 'react';
+import {ThemeContext, useTheme} from 'styled-components';
 
 export default function HomePage() {
-  return (
-    <div>
-
-    </div>
-  );
+    const themeContext = useContext(ThemeContext);
+    const theme = useTheme();
+    return (
+        <div>
+            123
+        </div>
+    );
 }
