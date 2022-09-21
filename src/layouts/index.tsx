@@ -6,9 +6,11 @@ import {ThemeProvider} from 'styled-components'
 import {Container, Title} from '@/styles/styled';
 import {darkTheme, lightTheme, Theme, ThemeEnum} from "@/styles/theme";
 import {useImmerReducer} from "use-immer";
+import Router from '@/util/router';
 import styles from './index.less';
 import sun from '@/assets/sun.png';
 import moon from '@/assets/moon.png';
+import {Route} from "react-router";
 
 const toggleIconStyle = {
     width: 12, height: 12
@@ -29,12 +31,20 @@ function themeReducer(state: Theme): Theme {
 export default function Layout() {
     const pathname = useLocation().pathname;
     const [theme, dispatch] = useImmerReducer(themeReducer, darkTheme, initialTheme)
+
+    function handleClick() {
+        if (pathname !== '/') {
+            Router.goIndex();
+        }
+    }
+
     return (
         <ThemeProvider theme={theme}>
             <Container>
                 <div className={styles.inner}>
                     <div className={styles.theme_btn}>
-                        <Title className={pathname === '/' ? styles.index_title : styles.detail_title}>
+                        <Title className={pathname === '/' ? styles.index_title : styles.article_title}
+                               onClick={handleClick}>
                             hichho
                         </Title>
                         <label>
